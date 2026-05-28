@@ -67,6 +67,11 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .link-dean a { color: #a31d24; text-decoration: none; font-weight: bold; font-size: 14px; }
+    .ccnn-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
@@ -123,17 +128,21 @@
     </div>
 
     <h3>Bước 2: Chọn Chứng chỉ ngoại ngữ (Nếu có)</h3>
-    <div class="form-group">
-      <select id="ccnnLoai">
-        <option value="NONE">Không có / Không dùng</option>
+    <div class="form-group ccnn-grid">
+      <select id="ccnnLoai" onchange="doiHuongDanCCNN()">
+        <option value="NONE">Không sử dụng</option>
         <option value="IELTS">IELTS Academic</option>
+        <option value="TOEFL">TOEFL iBT</option>
         <option value="VSTEP">VSTEP</option>
+        <option value="APTIS">APTIS ESOL</option>
+        <option value="TOEIC">TOEIC 4 kỹ năng</option>
+        <option value="HSK">HSK (Tiếng Trung)</option>
+        <option value="TCF">TCF (Tiếng Pháp)</option>
+        <option value="DELF">DELF (Tiếng Pháp)</option>
       </select>
+      <input type="text" id="ccnnDiem" placeholder="Nhập điểm số / cấp độ">
     </div>
-    <div class="form-group">
-      <label>Mức điểm chứng chỉ đạt được:</label>
-      <input type="number" id="ccnnDiem" placeholder="Ví dụ: 6.5 (đối với IELTS) hoặc 8.0 (đối với VSTEP)" step="0.1">
-    </div>
+    <div id="huongDanCC" style="font-size: 12px; color: #666; margin-top: -5px; margin-bottom: 10px;"></div>
 
     <h3>Bước 3: Chọn Nhóm ngành & Ngành tra cứu</h3>
     <div class="form-group">
@@ -166,13 +175,12 @@
 
     <div class="link-dean">
       <span>Trường Đại học Thương Mại (TMU)</span>
-      <a href="https://tuyensinh.tmu.edu.vn/de-an-tuyen-sinh" target="_blank">Xem Đề Án Gốc ➔</a>
+      <a href="https://tuyensinh.tmu.edu.vn/de-an-tuyen-sink" target="_blank">Xem Đề Án Gốc ➔</a>
     </div>
 
   </div>
 
   <script>
-    // Dữ liệu đã được phân loại theo Nhóm ngành lớn từ file dữ liệu của bạn
     const dataTMU = {
       "QUANTRI": {
         "TM01": { ten: "Quản trị kinh doanh (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.8 },
@@ -234,7 +242,20 @@
       }
     };
 
-    // Hàm đổi danh sách ngành khi đổi nhóm ngành
+    function doiHuongDanCCNN() {
+      const loai = document.getElementById("ccnnLoai").value;
+      const gd = document.getElementById("huongDanCC");
+      if(loai === "IELTS") gd.innerText = "Nhập điểm số (Ví dụ: 6.5, 7.0)";
+      else if(loai === "TOEFL") gd.innerText = "Nhập tổng điểm số (Ví dụ: 68, 80)";
+      else if(loai === "VSTEP") gd.innerText = "Nhập điểm số bậc 3-6 (Ví dụ: 7.5, 8.5)";
+      else if(loai === "APTIS") gd.innerText = "Nhập số điểm tổng (Ví dụ: 155, 175)";
+      else if(loai === "TOEIC") gd.innerText = "Nhập tổng điểm NgheĐọc + NóiViết (Ví dụ: 790)";
+      else if(loai === "HSK") gd.innerText = "Nhập cấp độ HSK (Ví dụ: 4, 5, 6)";
+      else if(loai === "TCF") gd.innerText = "Nhập số điểm TCF (Ví dụ: 410, 520)";
+      else if(loai === "DELF") gd.innerText = "Nhập mã cấp độ viết hoa (Ví dụ: B1, B2, C1)";
+      else gd.innerText = "";
+    }
+
     function doiNhomNganh() {
       const nhom = document.getElementById("selectNhomNganh").value;
       const selectNganh = document.getElementById("selectNganh");
@@ -252,10 +273,11 @@
       }
     }
 
-    // Hàm tính điểm khuyến khích từ chứng chỉ ngoại ngữ (Theo bảng TMU bạn gửi)
+    // Logic quy đổi 5 mức điểm khuyến khích (0.5 -> 1.5) từ file dữ liệu của bạn
     function tinhDiemKhuyenKhich() {
       const loai = document.getElementById("ccnnLoai").value;
-      const diem = parseFloat(document.getElementById("ccnnDiem").value) || 0;
+      const valInput = document.getElementById("ccnnDiem").value.trim();
+      const diem = parseFloat(valInput) || 0;
 
       if (loai === "IELTS") {
         if (diem >= 7.0) return 1.5;
@@ -264,6 +286,13 @@
         if (diem >= 5.5) return 0.75;
         if (diem >= 5.0) return 0.5;
       }
+      if (loai === "TOEFL") {
+        if (diem >= 85) return 1.5;
+        if (diem >= 75) return 1.25;
+        if (diem >= 65) return 1.0;
+        if (diem >= 51) return 0.75;
+        if (diem >= 45) return 0.5;
+      }
       if (loai === "VSTEP") {
         if (diem >= 8.5) return 1.5;
         if (diem >= 8.0) return 1.25;
@@ -271,10 +300,42 @@
         if (diem >= 6.0) return 0.75;
         if (diem >= 5.5) return 0.5;
       }
+      if (loai === "APTIS") {
+        if (diem >= 180) return 1.5;
+        if (diem >= 170) return 1.25;
+        if (diem >= 160) return 1.0;
+        if (diem >= 150) return 0.75;
+        if (diem >= 140) return 0.5;
+      }
+      if (loai === "TOEIC") {
+        if (diem >= 830) return 1.5;
+        if (diem >= 780) return 1.25;
+        if (diem >= 680) return 1.0;
+        if (diem >= 560) return 0.75;
+        if (diem >= 440) return 0.5;
+      }
+      if (loai === "HSK") {
+        if (valInput === "6") return 1.5;
+        if (valInput === "5") return 1.25;
+        if (valInput === "4") return 1.0;
+        if (valInput === "3") return 0.5;
+      }
+      if (loai === "TCF") {
+        if (diem >= 500) return 1.5;
+        if (diem >= 450) return 1.25;
+        if (diem >= 400) return 1.0;
+        if (diem >= 350) return 0.75;
+        if (diem >= 300) return 0.5;
+      }
+      if (loai === "DELF") {
+        let textU = valInput.toUpperCase();
+        if (textU === "C1" || textU === "C2") return 1.5;
+        if (textU === "B2") return 1.25;
+        if (textU === "B1") return 0.75;
+      }
       return 0;
     }
 
-    // Hàm phân tích kết quả chính
     function analysisKetQua() {
       const nhom = document.getElementById("selectNhomNganh").value;
       const maNganh = document.getElementById("selectNganh").value;
@@ -284,7 +345,6 @@
         return;
       }
 
-      // Đọc điểm người dùng nhập
       const dToan = parseFloat(document.getElementById("diemToan").value);
       const dVan = parseFloat(document.getElementById("diemVan").value);
       const mTc1 = document.getElementById("monTc1").value;
@@ -301,12 +361,11 @@
         return;
       }
 
-      // Tạo từ điển điểm số
       let diemMon = { "TOAN": dToan, "VAN": dVan };
       diemMon[mTc1] = dTc1;
       diemMon[mTc2] = dTc2;
 
-      // Định nghĩa các tổ hợp môn để hệ thống tự động sinh điểm
+      // Danh sách map tổ hợp (Đã bổ sung chuẩn D04 tiếng Trung và D03 tiếng Pháp)
       const mapTohop = {
         "A00": ["TOAN", "LY", "HOA"],
         "A01": ["TOAN", "LY", "ANH"],
@@ -320,18 +379,14 @@
         "D10": ["TOAN", "DIA", "ANH"]
       };
 
-      // Điểm khuyến khích CCNN
       const diemKhuyenKhich = tinhDiemKhuyenKhich();
-
       const nganhChon = dataTMU[nhom][maNganh];
       let htmlOutput = "";
       let coTohopXetTuyen = false;
 
-      // Quét qua các tổ hợp mà Ngành này chấp nhận xét tuyển
       nganhChon.khoi.forEach(tenKhoi => {
         let cacMonYeuCau = mapTohop[tenKhoi];
         
-        // Nếu học sinh thi đủ các môn của khối đó
         if (cacMonYeuCau && cacMonYeuCau.every(m => diemMon[m] !== undefined)) {
           coTohopXetTuyen = true;
           let diemGoc3Mon = diemMon[cacMonYeuCau[0]] + diemMon[cacMonYeuCau[1]] + diemMon[cacMonYeuCau[2]];
