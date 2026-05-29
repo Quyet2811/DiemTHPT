@@ -136,13 +136,13 @@
         <option value="VSTEP">VSTEP</option>
         <option value="APTIS">APTIS ESOL</option>
         <option value="TOEIC">TOEIC 4 kỹ năng</option>
-        <option value="HSK">HSK (Tiếng Trung)</option>
-        <option value="TCF">TCF (Tiếng Pháp)</option>
-        <option value="DELF">DELF (Tiếng Pháp)</option>
+        <option value="HSK">HSK (Chỉ dùng cho ngành Trung)</option>
+        <option value="TCF">TCF (Chỉ dùng cho ngành Pháp)</option>
+        <option value="DELF">DELF (Chỉ dùng cho ngành Pháp)</option>
       </select>
       <input type="text" id="ccnnDiem" placeholder="Nhập điểm số / cấp độ">
     </div>
-    <div id="huongDanCC" style="font-size: 12px; color: #666; margin-top: -5px; margin-bottom: 10px;"></div>
+    <div id="huongDanCC" style="font-size: 12px; color: #a31d24; margin-top: -5px; margin-bottom: 10px; font-weight: 500;"></div>
 
     <h3>Bước 3: Chọn Nhóm ngành & Ngành tra cứu</h3>
     <div class="form-group">
@@ -175,7 +175,7 @@
 
     <div class="link-dean">
       <span>Trường Đại học Thương Mại (TMU)</span>
-      <a href="https://tuyensinh.tmu.edu.vn/de-an-tuyen-sink" target="_blank">Xem Đề Án Gốc ➔</a>
+      <a href="https://tuyensinh.tmu.edu.vn/de-an-tuyen-sinh" target="_blank">Xem Đề Án Gốc ➔</a>
     </div>
 
   </div>
@@ -231,7 +231,7 @@
       },
       "NGONNGU": {
         "TM33": { ten: "Ngôn ngữ Anh (Tiếng Anh thương mại)", khoi: ["A01","D01","D07"], dc2025: 26.1 },
-        "TM40": { ten: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại)", khoi: ["A01","D01","D07","D04"], dc2025: 27.4 },
+        "TM40": { ten: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại)", khoi: ["A01","D01","D07"], dc2025: 27.4 },
         "TM41": { ten: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại - IPOP)", khoi: ["D04"], dc2025: 26.8 },
         "TM42": { ten: "Quản trị kinh doanh (Tiếng Pháp thương mại)", khoi: ["A00","A01","D01","D03","D07"], dc2025: 22.5 }
       },
@@ -245,14 +245,14 @@
     function doiHuongDanCCNN() {
       const loai = document.getElementById("ccnnLoai").value;
       const gd = document.getElementById("huongDanCC");
-      if(loai === "IELTS") gd.innerText = "Nhập điểm số (Ví dụ: 6.5, 7.0)";
-      else if(loai === "TOEFL") gd.innerText = "Nhập tổng điểm số (Ví dụ: 68, 80)";
-      else if(loai === "VSTEP") gd.innerText = "Nhập điểm số bậc 3-6 (Ví dụ: 7.5, 8.5)";
-      else if(loai === "APTIS") gd.innerText = "Nhập số điểm tổng (Ví dụ: 155, 175)";
-      else if(loai === "TOEIC") gd.innerText = "Nhập tổng điểm NgheĐọc + NóiViết (Ví dụ: 790)";
-      else if(loai === "HSK") gd.innerText = "Nhập cấp độ HSK (Ví dụ: 4, 5, 6)";
-      else if(loai === "TCF") gd.innerText = "Nhập số điểm TCF (Ví dụ: 410, 520)";
-      else if(loai === "DELF") gd.innerText = "Nhập mã cấp độ viết hoa (Ví dụ: B1, B2, C1)";
+      if(loai === "IELTS") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 6.5)";
+      else if(loai === "TOEFL") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập tổng điểm (Ví dụ: 78)";
+      else if(loai === "VSTEP") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 7.5)";
+      else if(loai === "APTIS") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 165)";
+      else if(loai === "TOEIC") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 780)";
+      else if(loai === "HSK") gd.innerText = "⚠️ CHỈ tính cho ngành Ngôn ngữ TQ (TM40, TM41). Nhập cấp độ HSK (Ví dụ: 5)";
+      else if(loai === "TCF") gd.innerText = "⚠️ CHỈ tính cho ngành Tiếng Pháp (TM42). Nhập điểm số (Ví dụ: 400)";
+      else if(loai === "DELF") gd.innerText = "⚠️ CHỈ tính cho ngành Tiếng Pháp (TM42). Nhập mã cấp độ (Ví dụ: B2)";
       else gd.innerText = "";
     }
 
@@ -273,12 +273,26 @@
       }
     }
 
-    // Logic quy đổi 5 mức điểm khuyến khích (0.5 -> 1.5) từ file dữ liệu của bạn
-    function tinhDiemKhuyenKhich() {
+    // SỬA ĐỔI QUAN TRỌNG: Hàm tính điểm khuyến khích cần biết mã ngành đang chọn
+    function tinhDiemKhuyenKhich(maNganh) {
       const loai = document.getElementById("ccnnLoai").value;
       const valInput = document.getElementById("ccnnDiem").value.trim();
       const diem = parseFloat(valInput) || 0;
 
+      // Kiểm tra ràng buộc đặc biệt từ bảng dữ liệu của bạn
+      if (loai === "HSK" && maNganh !== "TM40" && maNganh !== "TM41") {
+        return -1; // Đánh dấu: CCNN này bị từ chối ở ngành này
+      }
+      if ((loai === "TCF" || loai === "DELF") && maNganh !== "TM42") {
+        return -1; // Đánh dấu: CCNN này bị từ chối ở ngành này
+      }
+      
+      // Ngành TM41 chỉ chấp nhận HSK, loại bỏ các chứng chỉ Anh/Pháp khác
+      if (maNganh === "TM41" && loai !== "HSK" && loai !== "NONE") {
+        return -1;
+      }
+
+      // Tiến hành quy đổi điểm bình thường nếu thỏa mãn điều kiện ngành
       if (loai === "IELTS") {
         if (diem >= 7.0) return 1.5;
         if (diem >= 6.5) return 1.25;
@@ -365,7 +379,6 @@
       diemMon[mTc1] = dTc1;
       diemMon[mTc2] = dTc2;
 
-      // Danh sách map tổ hợp (Đã bổ sung chuẩn D04 tiếng Trung và D03 tiếng Pháp)
       const mapTohop = {
         "A00": ["TOAN", "LY", "HOA"],
         "A01": ["TOAN", "LY", "ANH"],
@@ -379,9 +392,17 @@
         "D10": ["TOAN", "DIA", "ANH"]
       };
 
-      const diemKhuyenKhich = tinhDiemKhuyenKhich();
+      // Gọi hàm tính điểm và truyền kèm mã ngành hiện tại vào để check điều kiện ràng buộc
+      let diemKhuyenKhich = tinhDiemKhuyenKhich(maNganh);
+      let canhBaoText = "";
+
+      if (diemKhuyenKhich === -1) {
+        diemKhuyenKhich = 0; // Không được cộng điểm khuyến khích
+        canhBaoText = `<p style="color:#d9534f; font-weight:bold; margin-bottom:10px;">⚠️ Lưu ý: Chứng chỉ ngoại ngữ bạn chọn không hợp lệ hoặc không áp dụng cho ngành này theo đề án TMU, điểm khuyến khích được tính bằng 0.</p>`;
+      }
+
       const nganhChon = dataTMU[nhom][maNganh];
-      let htmlOutput = "";
+      let htmlOutput = canhBaoText;
       let coTohopXetTuyen = false;
 
       nganhChon.khoi.forEach(tenKhoi => {
@@ -410,7 +431,7 @@
       });
 
       if(!coTohopXetTuyen) {
-        htmlOutput = `<p style="color:#666;">Các môn bạn thi không tạo thành tổ hợp xét tuyển phù hợp cho ngành này (Yêu cầu tổ hợp: ${nganhChon.khoi.join(", ")}).</p>`;
+        htmlOutput += `<p style="color:#666;">Các môn bạn thi không tạo thành tổ hợp xét tuyển phù hợp cho ngành này (Yêu cầu tổ hợp: ${nganhChon.khoi.join(", ")}).</p>`;
       }
 
       document.getElementById("tieuDeKetQua").innerText = "Kết quả ngành: " + nganhChon.ten;
