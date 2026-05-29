@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tra Cứu Điểm Chuẩn Đại Học Thương Mại (TMU)</title>
+  <title>Hệ Thống Tra Cứu Điểm Chuẩn Đại Học</title>
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -14,137 +14,129 @@
     }
     .container {
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      max-width: 500px;
-      margin: 10px auto;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      max-width: 550px;
+      margin: 20px auto;
     }
-    h2 { text-align: center; color: #a31d24; margin-bottom: 20px; font-size: 22px; }
-    h3 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-top: 25px; font-size: 18px; }
+    h2 { text-align: center; color: #a31d24; margin-bottom: 25px; font-size: 24px; }
+    h3 { color: #2c3e50; border-bottom: 2px solid #a31d24; padding-bottom: 6px; margin-top: 25px; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
     .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 14px; }
+    label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: #4a5568; }
     .row-mon {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
     }
     select, input {
-      width: 100%; padding: 10px;
-      border: 1px solid #ccc; border-radius: 6px;
-      font-size: 16px; box-sizing: border-box;
-    }
-    input:focus, select:focus { border-color: #a31d24; outline: none; }
-    button {
       width: 100%; padding: 12px;
+      border: 1px solid #cbd5e1; border-radius: 8px;
+      font-size: 15px; box-sizing: border-box;
+      transition: all 0.3s;
+    }
+    input:focus, select:focus { border-color: #a31d24; outline: none; box-shadow: 0 0 0 3px rgba(163, 29, 36, 0.15); }
+    button {
+      width: 100%; padding: 14px;
       background-color: #a31d24; color: white;
-      border: none; border-radius: 6px;
+      border: none; border-radius: 8px;
       font-size: 16px; font-weight: bold; cursor: pointer;
-      margin-top: 15px;
+      margin-top: 20px; box-shadow: 0 4px 6px rgba(163, 29, 36, 0.2);
     }
     button:hover { background-color: #821318; }
     .result-box {
-      margin-top: 20px; padding: 15px;
-      background: #e9ecef; border-radius: 8px;
+      margin-top: 25px; padding: 20px;
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
       display: none;
     }
     .khoi-item {
-      background: white; padding: 10px;
-      border-radius: 6px; margin-top: 8px;
-      border-left: 5px solid #6c757d;
+      background: white; padding: 15px;
+      border-radius: 8px; margin-top: 12px;
+      border-left: 5px solid #cbd5e1;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
-    .pass { border-left-color: #28a745; }
-    .fail { border-left-color: #dc3545; }
-    .status-text { font-weight: bold; margin-bottom: 4px; }
-    .status-text.pass { color: #28a745; }
-    .status-text.fail { color: #dc3545; }
-    .info-diem { font-size: 13px; color: #666; }
-    .link-dean {
-      background: #fff; padding: 12px;
-      border-radius: 8px; margin-top: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .link-dean a { color: #a31d24; text-decoration: none; font-weight: bold; font-size: 14px; }
-    .ccnn-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 10px;
+    .pass { border-left-color: #10b981; }
+    .fail { border-left-color: #ef4444; }
+    .status-text { font-weight: bold; margin-bottom: 6px; font-size: 15px; }
+    .status-text.pass { color: #10b981; }
+    .status-text.fail { color: #ef4444; }
+    .info-diem { font-size: 13.5px; color: #64748b; line-height: 1.5; }
+    .school-tag {
+      background: #fee2e2; color: #991b1b; padding: 4px 8px;
+      border-radius: 4px; font-size: 12px; font-weight: bold;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h2>Tra Cứu Điểm Chuẩn TMU</h2>
+    <h2>Hệ Thống Tra Cứu Tuyển Sinh</h2>
     
-    <h3>Bước 1: Nhập điểm thi THPT của bạn</h3>
+    <h3>Bước 1: Điểm thi tốt nghiệp THPT</h3>
     <div class="form-group">
       <div class="row-mon">
-        <input type="text" value="Toán (Bắt buộc)" disabled style="background:#e9ecef; font-weight:bold;">
-        <input type="number" id="diemToan" placeholder="Điểm Toán" step="0.1" min="0" max="10">
+        <input type="text" value="Toán (Bắt buộc)" disabled style="background:#f1f5f9; font-weight:bold; color:#475569;">
+        <input type="number" id="diemToan" placeholder="Nhập điểm" step="0.1" min="0" max="10">
       </div>
       <div class="row-mon">
-        <input type="text" value="Ngữ Văn (Bắt buộc)" disabled style="background:#e9ecef; font-weight:bold;">
-        <input type="number" id="diemVan" placeholder="Điểm Văn" step="0.1" min="0" max="10">
+        <input type="text" value="Ngữ Văn (Bắt buộc)" disabled style="background:#f1f5f9; font-weight:bold; color:#475569;">
+        <input type="number" id="diemVan" placeholder="Nhập điểm" step="0.1" min="0" max="10">
       </div>
     </div>
 
     <div class="form-group">
-      <label>Chọn môn tự chọn 1 và điểm:</label>
+      <label>Môn tự chọn thứ nhất:</label>
       <div class="row-mon">
         <select id="monTc1">
-          <option value="">-- Chọn môn --</option>
+          <option value="">-- Chọn môn học --</option>
           <option value="LY">Vật Lí</option>
           <option value="HOA">Hóa Học</option>
           <option value="SINH">Sinh Học</option>
           <option value="SU">Lịch Sử</option>
           <option value="DIA">Địa Lí</option>
+          <option value="GDKTPL">GD Kinh tế & Pháp luật</option>
+          <option value="TINHOC">Tin Học</option>
+          <option value="CNCN">Công nghệ Công nghiệp</option>
+          <option value="CNNN">Công nghệ Nông nghiệp</option>
           <option value="ANH">Tiếng Anh</option>
           <option value="PHAP">Tiếng Pháp</option>
           <option value="TRUNG">Tiếng Trung</option>
         </select>
-        <input type="number" id="diemTc1" placeholder="Điểm" step="0.1" min="0" max="10">
+        <input type="number" id="diemTc1" placeholder="Nhập điểm" step="0.1" min="0" max="10">
       </div>
     </div>
 
     <div class="form-group">
-      <label>Chọn môn tự chọn 2 và điểm:</label>
+      <label>Môn tự chọn thứ hai:</label>
       <div class="row-mon">
         <select id="monTc2">
-          <option value="">-- Chọn môn --</option>
+          <option value="">-- Chọn môn học --</option>
           <option value="LY">Vật Lí</option>
           <option value="HOA">Hóa Học</option>
           <option value="SINH">Sinh Học</option>
           <option value="SU">Lịch Sử</option>
           <option value="DIA">Địa Lí</option>
+          <option value="GDKTPL">GD Kinh tế & Pháp luật</option>
+          <option value="TINHOC">Tin Học</option>
+          <option value="CNCN">Công nghệ Công nghiệp</option>
+          <option value="CNNN">Công nghệ Nông nghiệp</option>
           <option value="ANH">Tiếng Anh</option>
           <option value="PHAP">Tiếng Pháp</option>
           <option value="TRUNG">Tiếng Trung</option>
         </select>
-        <input type="number" id="diemTc2" placeholder="Điểm" step="0.1" min="0" max="10">
+        <input type="number" id="diemTc2" placeholder="Nhập điểm" step="0.1" min="0" max="10">
       </div>
     </div>
 
-    <h3>Bước 2: Chọn Chứng chỉ ngoại ngữ (Nếu có)</h3>
-    <div class="form-group ccnn-grid">
-      <select id="ccnnLoai" onchange="doiHuongDanCCNN()">
-        <option value="NONE">Không sử dụng</option>
-        <option value="IELTS">IELTS Academic</option>
-        <option value="TOEFL">TOEFL iBT</option>
-        <option value="VSTEP">VSTEP</option>
-        <option value="APTIS">APTIS ESOL</option>
-        <option value="TOEIC">TOEIC 4 kỹ năng</option>
-        <option value="HSK">HSK (Chỉ dùng cho ngành Trung)</option>
-        <option value="TCF">TCF (Chỉ dùng cho ngành Pháp)</option>
-        <option value="DELF">DELF (Chỉ dùng cho ngành Pháp)</option>
-      </select>
-      <input type="text" id="ccnnDiem" placeholder="Nhập điểm số / cấp độ">
+    <h3>Bước 2: Chọn trường & ngành nguyện vọng</h3>
+    <div class="form-group">
+      <label>Chọn Trường Đại Học:</label>
+      <select id="selectTruong" onchange="doiTruong()">
+        <option value="TMU">Trường Đại học Thương Mại (TMU)</option>
+        </select>
     </div>
-    <div id="huongDanCC" style="font-size: 12px; color: #a31d24; margin-top: -5px; margin-bottom: 10px; font-weight: 500;"></div>
 
-    <h3>Bước 3: Chọn Nhóm ngành & Ngành tra cứu</h3>
     <div class="form-group">
       <label>Chọn Nhóm ngành:</label>
       <select id="selectNhomNganh" onchange="doiNhomNganh()">
@@ -152,120 +144,78 @@
         <option value="QUANTRI">Quản trị - Khách sạn - Du lịch</option>
         <option value="MARKETING">Marketing & Thương mại điện tử</option>
         <option value="KINHTE">Kinh tế & Kinh doanh quốc tế</option>
-        <option value="KETOAN">Kế toán & Kiểm toán</option>
-        <option value="LUAT">Luật kinh tế</option>
-        <option value="NGONNGU">Ngôn ngữ thương mại</option>
-        <option value="CONGNGHE">Hệ thống thông tin & Kinh tế số</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label>Chọn Ngành / CTĐT cụ thể tại TMU:</label>
+      <label>Chọn Ngành / Chuyên ngành cụ thể:</label>
       <select id="selectNganh">
         <option value="">-- Vui lòng chọn nhóm ngành trước --</option>
       </select>
     </div>
 
-    <button onclick="analysisKetQua()">Phân Tích Cơ Hội Trúng Tuyển</button>
+    <button onclick="tinhToanXetTuyen()">Phân Tích Kết Quả</button>
 
     <div class="result-box" id="vungKetQua">
-      <h3 style="margin-top:0; color:#333;" id="tieuDeKetQua">Kết quả phân tích:</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h4 style="margin: 0; color: #1e293b; font-size: 16px;" id="textTenNganh">Kết quả phân tích:</h4>
+        <span class="school-tag" id="tagTenTruong">TMU</span>
+      </div>
       <div id="chiTietKetQua"></div>
-    </div>
-
-    <div class="link-dean">
-      <span>Trường Đại học Thương Mại (TMU)</span>
-      <a href="https://tuyensinh.tmu.edu.vn/de-an-tuyen-sinh" target="_blank">Xem Đề Án Gốc ➔</a>
     </div>
 
   </div>
 
   <script>
-    const dataTMU = {
-      "QUANTRI": {
-        "TM01": { ten: "Quản trị kinh doanh (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.8 },
-        "TM02": { ten: "Quản trị kinh doanh (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 25.4 },
-        "TM03": { ten: "Quản trị kinh doanh (Khởi nghiệp & PTKD)", khoi: ["A00","A01","D01","D07"], dc2025: 25.1 },
-        "TM04": { ten: "Quản trị khách sạn (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.4 },
-        "TM05": { ten: "Quản trị khách sạn (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 25.1 },
-        "TM06": { ten: "Quản trị dịch vụ du lịch và lữ hành", khoi: ["A00","A01","D01","D07"], dc2025: 24.8 },
-        "TM37": { ten: "Quản trị nhân lực doanh nghiệp (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.6 },
-        "TM38": { ten: "Quản trị nhân lực doanh nghiệp (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24.8 },
-        "TM43": { ten: "Quản trị kinh doanh - Khởi nghiệp (Song bằng QT)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 22.5 }
-      },
-      "MARKETING": {
-        "TM07": { ten: "Marketing Thương mại (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 27.3 },
-        "TM08": { ten: "Marketing thương mại (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 26.3 },
-        "TM09": { ten: "Marketing số", khoi: ["A00","A01","D01","D07"], dc2025: 27.5 },
-        "TM10": { ten: "Marketing (Quản trị Thương hiệu)", khoi: ["A00","A01","D01","D07"], dc2025: 26.8 },
-        "TM11": { ten: "Marketing (Quản trị thương hiệu - IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 26.1 },
-        "TM28": { ten: "Quản trị thương mại điện tử", khoi: ["A00","A01","D01","D07"], dc2025: 27.6 },
-        "TM29": { ten: "Thương mại điện tử (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 26.5 },
-        "TM30": { ten: "Thương mại điện tử (Kinh doanh số)", khoi: ["A00","A01","D01","D07"], dc2025: 27.2 },
-        "TM44": { ten: "Marketing thương mại - Bán hàng (Song bằng QT)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24.8 }
-      },
-      "KINHTE": {
-        "TM17": { ten: "Logistics và Quản lý chuỗi cung ứng", khoi: ["A00","A01","D01","D07"], dc2025: 27.8 },
-        "TM18": { ten: "Logistics và Xuất nhập khẩu (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 26.6 },
-        "TM19": { ten: "Kinh doanh quốc tế (Thương mại quốc tế)", khoi: ["A00","A01","D01","D07"], dc2025: 26.8 },
-        "TM20": { ten: "Kinh doanh quốc tế (Thương mại quốc tế - IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 26.3 },
-        "TM21": { ten: "Kinh tế quốc tế", khoi: ["A00","A01","D01","D07"], dc2025: 26.6 },
-        "TM22": { ten: "Kinh tế (Quản lý kinh tế)", khoi: ["A00","A01","D01","D07"], dc2025: 25.1 },
-        "TM23": { ten: "Kinh tế và Quản lý đầu tư (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24.7 },
-        "TM24": { ten: "Tài chính - Ngân hàng thương mại", khoi: ["A00","A01","D01","D07"], dc2025: 26.1 },
-        "TM25": { ten: "Tài chính - Ngân hàng thương mại (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 25.4 },
-        "TM26": { ten: "Tài chính - Ngân hàng (Tài chính công)", khoi: ["A00","A01","D01","D07"], dc2025: 25.2 },
-        "TM27": { ten: "Công nghệ tài chính ngân hàng", khoi: ["A00","A01","D01","D07"], dc2025: 25 }
-      },
-      "KETOAN": {
-        "TM12": { ten: "Kế toán doanh nghiệp", khoi: ["A00","A01","D01","D07"], dc2025: 25.8 },
-        "TM13": { ten: "Kế toán tích hợp chứng chỉ ICAEW CFAB (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24 },
-        "TM14": { ten: "Kế toán công", khoi: ["A00","A01","D01","D07"], dc2025: 24.8 },
-        "TM15": { ten: "Kiểm toán", khoi: ["A00","A01","D01","D07"], dc2025: 25.7 },
-        "TM16": { ten: "Kiểm toán tích hợp chứng chỉ ICAEW CFAB (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24 }
-      },
-      "LUAT": {
-        "TM34": { ten: "Luật kinh tế", khoi: ["A00","A01","D01","D07"], dc2025: 25.4 },
-        "TM35": { ten: "Luật kinh doanh (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24.7 },
-        "TM36": { ten: "Luật thương mại quốc tế", khoi: ["A00","A01","D01","D07"], dc2025: 25.1 }
-      },
-      "NGONNGU": {
-        "TM33": { ten: "Ngôn ngữ Anh (Tiếng Anh thương mại)", khoi: ["A01","D01","D07"], dc2025: 26.1 },
-        "TM40": { ten: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại)", khoi: ["A01","D01","D04","D07"], dc2025: 27.4 },
-        "TM41": { ten: "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại - IPOP)", khoi: ["D04"], dc2025: 26.8 },
-        "TM42": { ten: "Quản trị kinh doanh (Tiếng Pháp thương mại)", khoi: ["A00","A01","D01","D03","D07"], dc2025: 22.5 }
-      },
-      "CONGNGHE": {
-        "TM31": { ten: "Quản trị Hệ thống thông tin", khoi: ["A00","A01","D01","D07"], dc2025: 24.8 },
-        "TM32": { ten: "Quản trị Hệ thống thông tin (IPOP)", khoi: ["A01","D01","D07","D09","D10"], dc2025: 24.2 },
-        "TM39": { ten: "Kinh tế số (Phân tích kinh doanh trong môi trường số)", khoi: ["A00","A01","D01","D07"], dc2025: 25.1 }
+    // Cơ sở dữ liệu cấu trúc mới, sẵn sàng mở rộng đa trường
+    const dataTuyenSinh = {
+      "TMU": {
+        "tenTruong": "Đại học Thương Mại",
+        "nganhHoc": {
+          "QUANTRI": {
+            "TM01": { ten: "Quản trị kinh doanh (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.8 },
+            "TM04": { ten: "Quản trị khách sạn (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 25.4 }
+          },
+          "MARKETING": {
+            "TM07": { ten: "Marketing Thương mại (Đại trà)", khoi: ["A00","A01","D01","D07"], dc2025: 27.3 },
+            "TM09": { ten: "Marketing số", khoi: ["A00","A01","D01","D07"], dc2025: 27.5 }
+          },
+          "KINHTE": {
+            "TM17": { ten: "Logistics và Quản lý chuỗi cung ứng", khoi: ["A00","A01","D01","D07"], dc2025: 27.8 }
+          }
+        }
       }
     };
 
-    function doiHuongDanCCNN() {
-      const loai = document.getElementById("ccnnLoai").value;
-      const gd = document.getElementById("huongDanCC");
-      if(loai === "IELTS") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 6.5)";
-      else if(loai === "TOEFL") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập tổng điểm (Ví dụ: 78)";
-      else if(loai === "VSTEP") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 7.5)";
-      else if(loai === "APTIS") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 165)";
-      else if(loai === "TOEIC") gd.innerText = "Áp dụng toàn bộ ngành trừ TM41. Nhập điểm số (Ví dụ: 780)";
-      else if(loai === "HSK") gd.innerText = "⚠️ CHỈ tính cho ngành Ngôn ngữ TQ (TM40, TM41). Nhập cấp độ HSK (Ví dụ: 5)";
-      else if(loai === "TCF") gd.innerText = "⚠️ CHỈ tính cho ngành Tiếng Pháp (TM42). Nhập điểm số (Ví dụ: 400)";
-      else if(loai === "DELF") gd.innerText = "⚠️ CHỈ tính cho ngành Tiếng Pháp (TM42). Nhập mã cấp độ (Ví dụ: B2)";
-      else gd.innerText = "";
+    // Định nghĩa dữ liệu cốt lõi cho các tổ hợp môn
+    const mapTohopChuan = {
+      "A00": ["TOAN", "LY", "HOA"],
+      "A01": ["TOAN", "LY", "ANH"],
+      "D01": ["TOAN", "VAN", "ANH"],
+      "D03": ["TOAN", "VAN", "PHAP"],
+      "D04": ["TOAN", "VAN", "TRUNG"],
+      "D07": ["TOAN", "HOA", "ANH"]
+      // Sau này các trường khác có thêm tổ hợp nào (ví dụ có Tin học, Kinh tế pháp luật...) ta chỉ cần khai báo thêm vào đây là xong!
+    };
+
+    function doiTruong() {
+      // Khi đổi trường sẽ reset bộ nhóm ngành để tránh râu ông nọ cắm cằm bà kia
+      document.getElementById("selectNhomNganh").value = "";
+      document.getElementById("selectNganh").innerHTML = '<option value="">-- Vui lòng chọn nhóm ngành trước --</option>';
     }
 
     function doiNhomNganh() {
+      const truong = document.getElementById("selectTruong").value;
       const nhom = document.getElementById("selectNhomNganh").value;
       const selectNganh = document.getElementById("selectNganh");
       selectNganh.innerHTML = '<option value="">-- Chọn Ngành --</option>';
 
-      if(nhom && dataTMU[nhom]) {
-        for(let ma in dataTMU[nhom]) {
+      if(truong && nhom && dataTuyenSinh[truong].nganhHoc[nhom]) {
+        const listNganh = dataTuyenSinh[truong].nganhHoc[nhom];
+        for(let ma in listNganh) {
           let option = document.createElement("option");
           option.value = ma;
-          option.text = `[${ma}] ${dataTMU[nhom][ma].ten}`;
+          option.text = `[${ma}] ${listNganh[ma].ten}`;
           selectNganh.appendChild(option);
         }
       } else {
@@ -273,89 +223,13 @@
       }
     }
 
-    // SỬA ĐỔI QUAN TRỌNG: Hàm tính điểm khuyến khích cần biết mã ngành đang chọn
-    function tinhDiemKhuyenKhich(maNganh) {
-      const loai = document.getElementById("ccnnLoai").value;
-      const valInput = document.getElementById("ccnnDiem").value.trim();
-      const diem = parseFloat(valInput) || 0;
+    function tinhToanXetTuyen() {
+      const truongKey = document.getElementById("selectTruong").value;
+      const nhomKey = document.getElementById("selectNhomNganh").value;
+      const nganhKey = document.getElementById("selectNganh").value;
 
-      // Kiểm tra ràng buộc đặc biệt từ bảng dữ liệu của bạn
-      if (loai === "HSK" && maNganh !== "TM40" && maNganh !== "TM41") {
-        return -1; // Đánh dấu: CCNN này bị từ chối ở ngành này
-      }
-      if ((loai === "TCF" || loai === "DELF") && maNganh !== "TM42") {
-        return -1; // Đánh dấu: CCNN này bị từ chối ở ngành này
-      }
-      
-      // Ngành TM41 chỉ chấp nhận HSK, loại bỏ các chứng chỉ Anh/Pháp khác
-      if (maNganh === "TM41" && loai !== "HSK" && loai !== "NONE") {
-        return -1;
-      }
-
-      // Tiến hành quy đổi điểm bình thường nếu thỏa mãn điều kiện ngành
-      if (loai === "IELTS") {
-        if (diem >= 7.0) return 1.5;
-        if (diem >= 6.5) return 1.25;
-        if (diem >= 6.0) return 1.0;
-        if (diem >= 5.5) return 0.75;
-        if (diem >= 5.0) return 0.5;
-      }
-      if (loai === "TOEFL") {
-        if (diem >= 85) return 1.5;
-        if (diem >= 75) return 1.25;
-        if (diem >= 65) return 1.0;
-        if (diem >= 51) return 0.75;
-        if (diem >= 45) return 0.5;
-      }
-      if (loai === "VSTEP") {
-        if (diem >= 8.5) return 1.5;
-        if (diem >= 8.0) return 1.25;
-        if (diem >= 7.0) return 1.0;
-        if (diem >= 6.0) return 0.75;
-        if (diem >= 5.5) return 0.5;
-      }
-      if (loai === "APTIS") {
-        if (diem >= 180) return 1.5;
-        if (diem >= 170) return 1.25;
-        if (diem >= 160) return 1.0;
-        if (diem >= 150) return 0.75;
-        if (diem >= 140) return 0.5;
-      }
-      if (loai === "TOEIC") {
-        if (diem >= 830) return 1.5;
-        if (diem >= 780) return 1.25;
-        if (diem >= 680) return 1.0;
-        if (diem >= 560) return 0.75;
-        if (diem >= 440) return 0.5;
-      }
-      if (loai === "HSK") {
-        if (valInput === "6") return 1.5;
-        if (valInput === "5") return 1.25;
-        if (valInput === "4") return 1.0;
-        if (valInput === "3") return 0.5;
-      }
-      if (loai === "TCF") {
-        if (diem >= 500) return 1.5;
-        if (diem >= 450) return 1.25;
-        if (diem >= 400) return 1.0;
-        if (diem >= 350) return 0.75;
-        if (diem >= 300) return 0.5;
-      }
-      if (loai === "DELF") {
-        let textU = valInput.toUpperCase();
-        if (textU === "C1" || textU === "C2") return 1.5;
-        if (textU === "B2") return 1.25;
-        if (textU === "B1") return 0.75;
-      }
-      return 0;
-    }
-
-    function analysisKetQua() {
-      const nhom = document.getElementById("selectNhomNganh").value;
-      const maNganh = document.getElementById("selectNganh").value;
-
-      if(!nhom || !maNganh) {
-        alert("Vui lòng chọn đầy đủ Nhóm ngành và Ngành tra cứu!");
+      if(!truongKey || !nhomKey || !nganhKey) {
+        alert("Vui lòng chọn đầy đủ Trường, Nhóm ngành và Ngành cần tra cứu!");
         return;
       }
 
@@ -367,7 +241,7 @@
       const dTc2 = parseFloat(document.getElementById("diemTc2").value);
 
       if(isNaN(dToan) || isNaN(dVan) || !mTc1 || isNaN(dTc1) || !mTc2 || isNaN(dTc2)) {
-        alert("Vui lòng nhập đầy đủ điểm 4 môn thi THPT!");
+        alert("Vui lòng nhập đầy đủ điểm của 4 môn thi!");
         return;
       }
       if(mTc1 === mTc2) {
@@ -375,66 +249,48 @@
         return;
       }
 
-      let diemMon = { "TOAN": dToan, "VAN": dVan };
-      diemMon[mTc1] = dTc1;
-      diemMon[mTc2] = dTc2;
+      // Đóng gói điểm của thí sinh
+      let diemCuaBan = { "TOAN": dToan, "VAN": dVan };
+      diemCuaBan[mTc1] = dTc1;
+      diemCuaBan[mTc2] = dTc2;
 
-      const mapTohop = {
-        "A00": ["TOAN", "LY", "HOA"],
-        "A01": ["TOAN", "LY", "ANH"],
-        "B00": ["TOAN", "HOA", "SINH"],
-        "C00": ["VAN", "SU", "DIA"],
-        "D01": ["TOAN", "VAN", "ANH"],
-        "D03": ["TOAN", "VAN", "PHAP"],
-        "D04": ["TOAN", "VAN", "TRUNG"],
-        "D07": ["TOAN", "HOA", "ANH"],
-        "D09": ["TOAN", "SU", "ANH"],
-        "D10": ["TOAN", "DIA", "ANH"]
-      };
+      const infoTruong = dataTuyenSinh[truongKey];
+      const infoNganh = infoTruong.nganhHoc[nhomKey][nganhKey];
+      
+      let htmlOutput = "";
+      let timThayTohop = false;
 
-      // Gọi hàm tính điểm và truyền kèm mã ngành hiện tại vào để check điều kiện ràng buộc
-      let diemKhuyenKhich = tinhDiemKhuyenKhich(maNganh);
-      let canhBaoText = "";
-
-      if (diemKhuyenKhich === -1) {
-        diemKhuyenKhich = 0; // Không được cộng điểm khuyến khích
-        canhBaoText = `<p style="color:#d9534f; font-weight:bold; margin-bottom:10px;">⚠️ Lưu ý: Chứng chỉ ngoại ngữ bạn chọn không hợp lệ hoặc không áp dụng cho ngành này theo đề án TMU, điểm khuyến khích được tính bằng 0.</p>`;
-      }
-
-      const nganhChon = dataTMU[nhom][maNganh];
-      let htmlOutput = canhBaoText;
-      let coTohopXetTuyen = false;
-
-      nganhChon.khoi.forEach(tenKhoi => {
-        let cacMonYeuCau = mapTohop[tenKhoi];
+      // Quét qua các tổ hợp mà ngành này yêu cầu xét tuyển
+      infoNganh.khoi.forEach(tenKhoi => {
+        let yeuCauMon = mapTohopChuan[tenKhoi];
         
-        if (cacMonYeuCau && cacMonYeuCau.every(m => diemMon[m] !== undefined)) {
-          coTohopXetTuyen = true;
-          let diemGoc3Mon = diemMon[cacMonYeuCau[0]] + diemMon[cacMonYeuCau[1]] + diemMon[cacMonYeuCau[2]];
-          let diemXetTuyen = diemGoc3Mon + diemKhuyenKhich;
-          diemXetTuyen = Math.round(diemXetTuyen * 100) / 100;
+        // Kiểm tra xem thí sinh có thi đủ các môn trong tổ hợp này không
+        if (yeuCauMon && yeuCauMon.every(m => diemCuaBan[m] !== undefined)) {
+          timThayTohop = true;
+          let tongDiem = diemCuaBan[yeuCauMon[0]] + diemCuaBan[yeuCauMon[1]] + diemCuaBan[yeuCauMon[2]];
+          tongDiem = Math.round(tongDiem * 100) / 100;
 
-          let logicPass = diemXetTuyen >= nganhChon.dc2025;
-          let classTrangThai = logicPass ? "pass" : "fail";
-          let textTrangThai = logicPass ? "CƠ HỘI ĐỖ CAO 🟢" : "DƯỚI ĐIỂM CHUẨN 🔴";
+          let ketQuaDo = tongDiem >= infoNganh.dc2025;
+          let classStyle = ketQuaDo ? "pass" : "fail";
+          let textTrangThai = ketQuaDo ? "CƠ HỘI TRÚNG TUYỂN CAO 🟢" : "DƯỚI ĐIỂM CHUẨN 🔴";
 
           htmlOutput += `
-            <div class="khoi-item ${classTrangThai}">
-              <div class="status-text ${classTrangThai}">Tổ hợp ${tenKhoi}: ${textTrangThai}</div>
+            <div class="khoi-item ${classStyle}">
+              <div class="status-text ${classStyle}">Tổ hợp ${tenKhoi}: ${textTrangThai}</div>
               <div class="info-diem">
-                Điểm xét của bạn: <b>${diemXetTuyen}</b> điểm 
-                (Gốc 3 môn: ${diemGoc3Mon.toFixed(1)} + Khuyến khích CCNN: ${diemKhuyenKhich})<br>
-                Điểm chuẩn năm 2025: <b>${nganhChon.dc2025}</b> điểm
+                Điểm xét tuyển của bạn: <b>${tongDiem.toFixed(2)}</b> điểm<br>
+                Điểm chuẩn năm gần nhất: <b>${infoNganh.dc2025}</b> điểm
               </div>
             </div>`;
         }
       });
 
-      if(!coTohopXetTuyen) {
-        htmlOutput += `<p style="color:#666;">Các môn bạn thi không tạo thành tổ hợp xét tuyển phù hợp cho ngành này (Yêu cầu tổ hợp: ${nganhChon.khoi.join(", ")}).</p>`;
+      if(!timThayTohop) {
+        htmlOutput = `<p style="color:#64748b; font-size:14px; text-align:center; padding:10px;">Các môn bạn thi không tạo thành tổ hợp nào phù hợp cho ngành này.<br>(Ngành này yêu cầu các tổ hợp: ${infoNganh.khoi.join(", ")})</p>`;
       }
 
-      document.getElementById("tieuDeKetQua").innerText = "Kết quả ngành: " + nganhChon.ten;
+      document.getElementById("textTenNganh").innerText = infoNganh.ten;
+      document.getElementById("tagTenTruong").innerText = infoTruong.tenTruong;
       document.getElementById("chiTietKetQua").innerHTML = htmlOutput;
       document.getElementById("vungKetQua").style.display = "block";
     }
