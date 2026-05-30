@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quét Điểm Xét Tuyển Toàn Diện TMU</title>
+    <title>Hệ Thống Phân Tích Điểm Tuyển Sinh Chuẩn Xác Cao - TMU</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -15,12 +15,13 @@
             --text: #0f172a;
         }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 1050px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: 0 auto; }
         header { text-align: center; padding: 25px; background: linear-gradient(135deg, #1e3a8a, #4f46e5); color: white; border-radius: 12px; margin-bottom: 20px; }
         .card { background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
         h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; color: #1e293b; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 12px; }
+        .score-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
         .form-group { display: flex; flex-direction: column; margin-bottom: 10px; }
         label { font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #475569; }
         input, select { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
@@ -35,21 +36,21 @@
         .badge-pass { background: var(--success); }
         .badge-warn { background: var(--warning); }
         .badge-fail { background: var(--danger); }
-        .info-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px; color: #1e40af; }
+        .lang-section { border-left: 3px solid #f97316; padding-left: 8px; background: #fff7ed; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Hệ Thống Kiểm Tra Tuyển Sinh Tự Động</h1>
-        <p>Nhập điểm một lần duy nhất - Hệ thống tự động phân tích tỷ lệ trúng tuyển của tất cả các ngành trong trường</p>
+        <h1>Hệ Thống Phân Loại & Tính Toán Điểm Xét Tuyển Tự Động</h1>
+        <p>Phân phối chứng chỉ chính xác theo đặc thù ngành nghề - Tích hợp đầy đủ các môn Ngoại ngữ mở rộng</p>
     </header>
 
     <div class="card">
-        <h2>1. Chọn Trường Học Mục Tiêu</h2>
+        <h2>1. Chọn Trường Đại Học Xét Tuyển</h2>
         <div class="form-group" style="max-width: 400px;">
-            <label>Trường Đại Học</label>
+            <label>Trường Mục Tiêu</label>
             <select id="school-select" onchange="onSchoolChange()">
                 <option value="">-- Chọn Trường --</option>
             </select>
@@ -57,29 +58,39 @@
     </div>
 
     <div id="input-section" class="card hidden">
-        <h2>2. Nhập Toàn Bộ Điểm Số & Chứng Chỉ Hiện Có</h2>
+        <h2>2. Nhập Toàn Bộ Điểm Số & Chọn Chứng Chỉ Quốc Tế</h2>
 
-        <div style="background:#f8fafc; border: 1px solid #e2e8f0; padding:18px; border-radius:8px; margin-bottom:20px;">
-            <strong style="font-size:14px; display:block; margin-bottom:8px; color:var(--primary);">🎗️ Bạn Đạt Mức Chứng Chỉ Ngoại Ngữ Nào Dưới Đây? (Nếu có)</strong>
-            <div class="form-group" style="max-width: 100%;">
-                <select id="cert-level-select">
-                    <option value="0">Không có chứng chỉ ngoại ngữ nào / Hoặc dưới điều kiện quy đổi</option>
-                    <option value="Mức 1">Mức 1: IELTS ≥7.0 | TOEFL iBT ≥85 | VSTEP 8.5-10 | APTIS 180-200 | TOEIC 4 kĩ năng (NgheĐọc ≥830 + NóiViết ≥320) | HSK6 ≥180 | TCF ≥500 | DELF C1,C2</option>
-                    <option value="Mức 2">Mức 2: IELTS 6.5 | TOEFL iBT 75-84 | VSTEP 8.0 | APTIS 170-179 | TOEIC 4 kĩ năng (NgheĐọc ≥780 + NóiViết ≥300) | HSK5 ≥180 | TCF 450-499 | DELF B2</option>
-                    <option value="Mức 3">Mức 3: IELTS 6.0 | TOEFL iBT 65-74 | VSTEP 7.0-7.5 | APTIS 160-169 | TOEIC 4 kĩ năng (NgheĐọc ≥680 + NóiViết ≥280) | HSK4 | TCF 400-449</option>
-                    <option value="Mức 4">Mức 4: IELTS 5.5 | TOEFL iBT 51-64 | VSTEP 6.0-6.5 | APTIS 150-159 | TOEIC 4 kĩ năng (NgheĐọc ≥560 + NóiViết ≥260) | TCF 350-399 | DELF B1</option>
-                    <option value="Mức 5">Mức 5: IELTS 5.0 | TOEFL iBT 45-50 | VSTEP 5.5 | APTIS 140-149 | TOEIC 4 kĩ năng (NgheĐọc ≥440 + NóiViết ≥240) | HSK3 | TCF 300-349</option>
-                </select>
+        <div style="background:#f1f5f9; padding:18px; border-radius:8px; margin-bottom:20px;">
+            <strong style="font-size:14px; display:block; margin-bottom:10px; color:#1e3a8a;">🎗️ Chọn Chứng Chỉ Ngoại Ngữ Quốc Tế Hiện Có (Nếu có)</strong>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Loại Chứng Chỉ</label>
+                    <select id="cert-type" onchange="onCertTypeChange()">
+                        <option value="NONE">-- Không có chứng chỉ --</option>
+                        <option value="IELTS">IELTS Academic</option>
+                        <option value="TOEFL_IBT">TOEFL iBT (Không gồm Home Edition)</option>
+                        <option value="VSTEP">VSTEP</option>
+                        <option value="APTIS_ESOL">APTIS ESOL</option>
+                        <option value="TOEIC">TOEIC 4 kỹ năng</option>
+                        <option value="HSK">Tiếng Trung (HSK)</option>
+                        <option value="TCF">Tiếng Pháp (TCF)</option>
+                        <option value="DELF">Tiếng Pháp (DELF)</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="cert-level-wrapper">
+                    <label>Mức Điểm / Cấp Độ Đạt Được</label>
+                    <select id="cert-level"></select>
+                </div>
             </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:20px; background: #f0fdf4; padding: 12px; border-radius: 8px; border:1px solid #bbf7d0;">
-            <label style="color:#166534; font-weight:700;">📝 Điểm thi đánh giá năng lực ĐHQGHN (HSA) - Thang điểm 150 (Nếu có)</label>
-            <input type="number" id="score-hsa" min="0" max="150" placeholder="Ví dụ: 102.5" style="max-width:220px;">
+        <div class="form-group" style="margin-bottom:20px; background: #e0f2fe; padding: 12px; border-radius: 8px;">
+            <label style="color:#0369a1; font-weight:700;">📝 Điểm thi Đánh giá năng lực ĐHQGHN (HSA) - Thang 150 (Nếu có)</label>
+            <input type="number" id="score-hsa" min="0" max="150" placeholder="Ví dụ: 95.5" style="max-width:200px;">
         </div>
 
         <div class="form-group">
-            <label style="margin-bottom:10px; color:#1e293b; font-size:14px;">Nhập điểm thi các môn Tốt nghiệp THPT:</label>
+            <label style="margin-bottom:10px; color:#1e293b; font-size:14px;">Nhập điểm thi các môn thi Tốt nghiệp THPT:</label>
             <div class="score-grid">
                 <div class="form-group"><label>Toán</label><input type="number" id="m-toan" step="0.01" placeholder="0.0"></div>
                 <div class="form-group"><label>Ngữ văn</label><input type="number" id="m-van" step="0.01" placeholder="0.0"></div>
@@ -93,22 +104,26 @@
                 <div class="form-group"><label>CN Công nghiệp</label><input type="number" id="m-cncn" step="0.01" placeholder="0.0"></div>
                 <div class="form-group"><label>CN Nông nghiệp</label><input type="number" id="m-cnnn" step="0.01" placeholder="0.0"></div>
                 
-                <div class="form-group" style="background:#fff7ed;"><label style="color:#c2410c;">Tiếng Anh</label><input type="number" id="m-anh" step="0.01" placeholder="0.0"></div>
-                <div class="form-group" style="background:#fff7ed;"><label style="color:#c2410c;">Tiếng Trung</label><input type="number" id="m-trung" step="0.01" placeholder="0.0"></div>
-                <div class="form-group" style="background:#fff7ed;"><label style="color:#c2410c;">Tiếng Pháp</label><input type="number" id="m-phap" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Anh</label><input type="number" id="m-anh" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Trung</label><input type="number" id="m-trung" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Pháp</label><input type="number" id="m-phap" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Đức</label><input type="number" id="m-duc" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Nga</label><input type="number" id="m-nga" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Nhật</label><input type="number" id="m-nhat" step="0.01" placeholder="0.0"></div>
+                <div class="form-group lang-section"><label style="color:#c2410c;">Tiếng Hàn</label><input type="number" id="m-han" step="0.01" placeholder="0.0"></div>
             </div>
         </div>
 
         <div class="grid-3" style="margin-top:20px; border-top: 1px solid #cbd5e1; padding-top:15px;">
-            <div class="form-group"><label>Điểm ưu tiên đối tượng/khu vực (Ví dụ KV2: +0.25)</label><input type="number" id="bonus-ut" value="0" step="0.01"></div>
-            <div class="form-group"><label>Điểm khuyến khích học sinh giỏi khác (Nếu có)</label><input type="number" id="bonus-kk" value="0" step="0.01"></div>
+            <div class="form-group"><label>Điểm ưu tiên (Khu vực/Đối tượng)</label><input type="number" id="bonus-ut" value="0" step="0.01"></div>
+            <div class="form-group"><label>Điểm khuyến khích khác (HSG quốc gia/tỉnh...)</label><input type="number" id="bonus-kk" value="0" step="0.01"></div>
         </div>
     </div>
 
-    <button id="calc-btn" class="hidden" onclick="runComprehensiveAnalysis()">BẮT ĐẦU PHÂN TÍCH DIỆN RỘNG</button>
+    <button id="calc-btn" class="hidden" onclick="processStrictAnalysis()">CHẠY THUẬT TOÁN PHÂN LOẠI NGÀNH</button>
 
     <div class="card hidden" id="result-card">
-        <h2>3. Báo Cáo Tỷ Lệ Đỗ Toàn Bộ Các Ngành (Xếp theo khả năng đỗ từ cao xuống thấp)</h2>
+        <h2>3. Kết Quả Phân Loại Khả Năng Trúng Tuyển (Đã bóc tách giới hạn ngôn ngữ chứng chỉ)</h2>
         <div id="results-container"></div>
     </div>
 </div>
@@ -127,24 +142,36 @@
 
     function onSchoolChange() {
         const schoolKey = document.getElementById('school-select').value;
-        const inputSec = document.getElementById('input-section');
-        const calcBtn = document.getElementById('calc-btn');
+        document.getElementById('input-section').className = schoolKey ? "card" : "card hidden";
+        document.getElementById('calc-btn').className = schoolKey ? "" : "hidden";
         document.getElementById('result-card').classList.add('hidden');
-
-        if (!schoolKey) {
-            inputSec.classList.add('hidden');
-            calcBtn.classList.add('hidden');
-            return;
-        }
-        inputSec.classList.remove('hidden');
-        calcBtn.classList.remove('hidden');
     }
 
-    function runComprehensiveAnalysis() {
+    function onCertTypeChange() {
+        const type = document.getElementById('cert-type').value;
+        const wrapper = document.getElementById('cert-level-wrapper');
+        const levelSelect = document.getElementById('cert-level');
+        
+        if (type === "NONE") {
+            wrapper.classList.add('hidden');
+            return;
+        }
+        
+        levelSelect.innerHTML = '';
+        const certData = CERTIFICATES_DB[type];
+        for (let lvlKey in certData.levels) {
+            let opt = document.createElement('option');
+            opt.value = lvlKey;
+            opt.innerText = certData.levels[lvlKey].text;
+            levelSelect.appendChild(opt);
+        }
+        wrapper.classList.remove('hidden');
+    }
+
+    function processStrictAnalysis() {
         const schoolKey = document.getElementById('school-select').value;
         const schoolData = UNIVERSITY_DATABASE[schoolKey];
         
-        // Đọc điểm đầu vào
         let userScores = {};
         document.querySelectorAll('.score-grid input').forEach(inp => {
             let v = parseFloat(inp.value);
@@ -154,81 +181,84 @@
         let bonusUt = parseFloat(document.getElementById('bonus-ut').value) || 0;
         let bonusKk = parseFloat(document.getElementById('bonus-kk').value) || 0;
         let hsaInput = parseFloat(document.getElementById('score-hsa').value) || 0;
-        let selectedCertLevel = document.getElementById('cert-level-select').value;
+        
+        let certType = document.getElementById('cert-type').value;
+        let certLevel = document.getElementById('cert-level').value;
 
-        let finalReport = []; // Lưu trữ mảng kết quả phân tích để sắp xếp
+        let outputList = [];
 
-        // VÒNG LẶP DUYỆT QUA TOÀN BỘ 51 MÃ NGÀNH CỦA TMU
         for (let indCode in schoolData.industries) {
             let industry = schoolData.industries[indCode];
 
-            // A. NẾU LÀ NGÀNH MỚI TINH 2026 -> GHI NHẬN TRẠNG THÁI CHỜ XÉT TUYỂN
             if (industry.isNew2026) {
-                finalReport.push({
+                outputList.push({
                     name: industry.name, code: indCode, method: "Ngành Mới Mở 2026",
-                    myScore: "Đang chờ hồ sơ", benchmark: "Chưa có", status: "warn", badge: "NGÀNH MỚI TINH",
-                    note: "Ngành mới tinh năm nay, chưa có dữ liệu điểm chuẩn. Hệ thống tự động ghi nhận hồ sơ của bạn."
+                    myScore: "Xét hồ sơ", benchmark: "Chưa có", status: "warn", badge: "MỚI MỞ 2026",
+                    note: "Ngành mới tinh tuyển sinh năm nay, chưa có điểm sàn năm trước."
                 });
                 continue;
             }
 
-            // B. QUÉT PHƯƠNG THỨC XÉT ĐIỂM THI THPT TỐT NGHIỆP
+            // 1. XỬ LÝ PHƯƠNG THỨC XÉT ĐIỂM THI THPT TỐT NGHIỆP CỦA HƠN 160 TỔ HỢP
             industry.combs.forEach(comb => {
-                let subjects = COMBINATIONS_DB[comb];
-                if (!subjects) return;
+                let requiredSubjects = COMBINATIONS_DB[comb];
+                if (!requiredSubjects) return;
 
-                let isEligibleTHPT = subjects.every(m => userScores[m] !== undefined);
-                if (isEligibleTHPT) {
-                    let totalTHPT = subjects.reduce((sum, m) => sum + userScores[m], 0);
+                let hasFullTHPT = requiredSubjects.every(m => userScores[m] !== undefined);
+                if (hasFullTHPT) {
+                    let totalTHPT = requiredSubjects.reduce((sum, m) => sum + userScores[m], 0);
                     let finalTHPT = parseFloat((totalTHPT + bonusUt + bonusKk).toFixed(2));
 
-                    // Check điều kiện tiêu chí phụ điểm môn ngoại ngữ cụ thể
-                    let isSubFailed = false;
-                    let subMsg = '';
-                    if (industry.minEnglish && userScores["m-anh"] !== undefined && userScores["m-anh"] < industry.minEnglish) {
-                        isSubFailed = true;
-                        subMsg = `Môn Anh thi đạt ${userScores["m-anh"]}đ (Yêu cầu hệ IPOP tối thiểu ≥${industry.minEnglish}đ)`;
+                    let failedSubCond = false;
+                    let failedMsg = '';
+                    if (industry.minEnglish && userScores["m-anh"] < industry.minEnglish) {
+                        failedSubCond = true;
+                        failedMsg = `Điểm thi môn Anh (${userScores["m-anh"]}đ) chưa đạt mức tối thiểu ≥${industry.minEnglish}đ`;
                     }
-                    if (industry.minChinese && userScores["m-trung"] !== undefined && userScores["m-trung"] < industry.minChinese) {
-                        isSubFailed = true;
-                        subMsg = `Môn Trung thi đạt ${userScores["m-trung"]}đ (Yêu cầu tối thiểu ≥${industry.minChinese}đ)`;
+                    if (industry.minChinese && userScores["m-trung"] < industry.minChinese) {
+                        failedSubCond = true;
+                        failedMsg = `Điểm thi môn Trung (${userScores["m-trung"]}đ) chưa đạt mức tối thiểu ≥${industry.minChinese}đ`;
                     }
 
-                    let pass = finalTHPT >= industry.scores.thpt && !isSubFailed;
-                    finalReport.push({
+                    let pass = finalTHPT >= industry.scores.thpt && !failedSubCond;
+                    outputList.push({
                         name: industry.name, code: indCode, method: `Điểm thi THPT - Khối ${comb}`,
                         myScore: finalTHPT, benchmark: industry.scores.thpt,
-                        status: pass ? "pass" : (isSubFailed ? "warn" : "fail"),
-                        badge: pass ? "ĐỦ ĐIỂM ĐỖ" : (isSubFailed ? "TIÊU CHÍ PHỤ TRƯỢT" : "TỶ LỆ ĐỖ THẤP"),
-                        note: isSubFailed ? `⚠️ Loại vì tiêu chí phụ môn học: ${subMsg}` : `Điểm sàn năm ngoái: ${industry.scores.thpt} đ`
+                        status: pass ? "pass" : (failedSubCond ? "warn" : "fail"),
+                        badge: pass ? "ĐỦ ĐIỂM ĐỖ" : (failedSubCond ? "TRƯỢT TIÊU CHÍ PHỤ" : "ĐIỂM DƯỚI SÀN"),
+                        note: failedSubCond ? `⚠️ Loại vì: ${failedMsg}` : `Điểm chuẩn năm trước: ${industry.scores.thpt}đ`
                     });
                 }
             });
 
-            // C. QUÉT PHƯƠNG THỨC XÉT KẾT HỢP CHỨNG CHỈ NGOẠI NGỮ QUỐC TẾ (ĐẦY ĐỦ 8 LOẠI)
-            if (schoolKey === "TMU" && selectedCertLevel !== "0" && userScores["m-toan"] !== undefined) {
-                let certRule = TMU_CERT_RULES[selectedCertLevel];
+            // 2. XỬ LÝ PHƯƠNG THỨC XÉT KẾT HỢP CHỨNG CHỈ (CHỈ ÁP DỤNG KHI TỔ HỢP NGÀNH KHỚP VỚI LOẠI CHỨNG CHỈ)
+            if (certType !== "NONE" && userScores["m-toan"] !== undefined) {
+                let currentCertConfig = CERTIFICATES_DB[certType];
+                let matchedLevelData = currentCertConfig.levels[certLevel];
 
-                if (certRule && industry.scores.combined) {
+                if (matchedLevelData && industry.scores.combined) {
                     industry.combs.forEach(comb => {
-                        let subjects = COMBINATIONS_DB[comb];
-                        let langSub = CONFIG_LANGUAGE_SUBJECTS[comb];
+                        let requiredSubjects = COMBINATIONS_DB[comb];
+                        let langSubOfComb = CONFIG_LANGUAGE_SUBJECTS[comb];
 
-                        if (langSub) {
-                            let otherSub = subjects.find(m => m !== "m-toan" && m !== langSub);
-                            if (otherSub && userScores[otherSub] !== undefined) {
-                                // CÔNG THỨC CHUẨN TMU: Toán + Môn còn lại + Điểm Quy Đổi + Điểm Khuyến Khích Chứng Chỉ + Điểm Ưu Tiên + Điểm Khuyến Khích Khác
-                                let calculatedCombined = userScores["m-toan"] + userScores[otherSub] + certRule.score + certRule.bonus + bonusUt + bonusKk;
-                                calculatedCombined = parseFloat(calculatedCombined.toFixed(2));
+                        // ĐIỀU KIỆN QUYẾT ĐỊNH: Môn ngôn ngữ của khối xét tuyển phải trùng với ngôn ngữ của Chứng chỉ người dùng chọn!
+                        // Ví dụ: Chọn HSK (m-trung) thì chỉ quét được khối có môn Trung (D04, D25, D29, D82). Khối D01 (m-anh) sẽ bị bỏ qua.
+                        if (langSubOfComb === currentCertConfig.lang) {
+                            let remainSubject = requiredSubjects.find(m => m !== "m-toan" && m !== langSubOfComb);
+                            
+                            if (remainSubject && userScores[remainSubject] !== undefined) {
+                                // Công thức: Toán + Môn còn lại + Điểm Quy Đổi Môn NN + Điểm Khuyến khích Chứng chỉ + Điểm Ưu tiên + Điểm Khuyến khích khác
+                                let calculatedScore = userScores["m-toan"] + userScores[remainSubject] + matchedLevelData.score + matchedLevelData.bonus + bonusUt + bonusKk;
+                                calculatedScore = parseFloat(calculatedScore.toFixed(2));
 
-                                let pass = calculatedCombined >= industry.scores.combined;
-                                finalReport.push({
+                                let pass = calculatedScore >= industry.scores.combined;
+                                outputList.push({
                                     name: industry.name, code: indCode,
-                                    method: `Xét kết hợp Chứng chỉ Ngoại ngữ (Toán + Môn ${otherSub === "m-ly" ? "Vật lí" : otherSub === "m-van" ? "Ngữ văn" : "Hóa học"})`,
-                                    myScore: calculatedCombined, benchmark: industry.scores.combined,
+                                    method: `Xét kết hợp Chứng chỉ [${certType}] (Toán + Môn ${remainSubject === 'm-van'?'Ngữ văn':remainSubject==='m-ly'?'Vật lí':remainSubject==='m-hoa'?'Hóa học':'Đặc thù thuộc khối '+comb})`,
+                                    myScore: calculatedScore, benchmark: industry.scores.combined,
                                     status: pass ? "pass" : "fail",
                                     badge: pass ? "KẾT HỢP ĐỖ" : "KẾT HỢP THẤP",
-                                    note: `Áp dụng ${certRule.desc}. Quy đổi môn NN thành ${certRule.score}đ và cộng điểm KK chứng chỉ: +${certRule.bonus}đ.`
+                                    note: `Quy đổi môn Ngoại ngữ thành ${matchedLevelData.score}đ và cộng thêm Điểm Khuyến Khích Chứng Chỉ: +${matchedLevelData.bonus}đ.`
                                 });
                             }
                         }
@@ -236,38 +266,37 @@
                 }
             }
 
-            // D. QUÉT PHƯƠNG THỨC XÈT ĐIỂM THI ĐÁNH GIÁ NĂNG LỰC (HSA)
+            // 3. XỬ LÝ PHƯƠNG THỨC ĐIỂM THI HSA
             if (hsaInput > 0 && industry.scores.hsa) {
                 let finalHsa = parseFloat((hsaInput + bonusUt + bonusKk).toFixed(2));
                 let pass = finalHsa >= industry.scores.hsa;
-                finalReport.push({
-                    name: industry.name, code: indCode, method: "Xét điểm thi ĐGNL (HSA)",
+                outputList.push({
+                    name: industry.name, code: indCode, method: "Xét tuyển bằng Điểm ĐGNL (HSA)",
                     myScore: finalHsa, benchmark: industry.scores.hsa,
                     status: pass ? "pass" : "fail",
-                    badge: pass ? "HSA AN TOÀN" : "HSA ĐIỂM THẤP",
-                    note: `Tổng điểm HSA của bạn đạt ${finalHsa}/150đ. Điểm chuẩn sàn: ${industry.scores.hsa}đ`
+                    badge: pass ? "HSA AN TOÀN" : "HSA THẤP",
+                    note: `Tổng điểm HSA đã tính ưu tiên: ${finalHsa}/150đ. Điểm chuẩn năm trước: ${industry.scores.hsa}đ`
                 });
             }
         }
 
-        // TIẾN HÀNH IN KẾT QUẢ RA MÀN HÌNH
+        // ĐỔ KẾT QUẢ RA MÀN HÌNH HỌC SINH
         const container = document.getElementById('results-container');
         container.innerHTML = '';
         document.getElementById('result-card').classList.remove('hidden');
 
-        if (finalReport.length === 0) {
-            container.innerHTML = `<div style="padding:20px; color:var(--danger); font-weight:bold; text-align:center;">Hệ thống chưa tìm được ngành nào tương thích. Lý do: Bạn chưa nhập đủ điểm các môn tạo thành 1 khối thi hoàn chỉnh (Ví dụ: A00 cần nhập đủ Toán, Lí, Hóa; D01 cần Toán, Văn, Anh). Hãy nhập thêm điểm nhé!</div>`;
+        if (outputList.length === 0) {
+            container.innerHTML = `<div style="padding:20px; color:var(--danger); font-weight:bold; text-align:center;">Hệ thống không tìm thấy tổ hợp ngành tương thích. Lý do: Bạn chưa nhập đủ điểm các môn tạo thành 1 tổ hợp thi (Ví dụ: D01 cần Toán, Văn, Anh; D06 cần Toán, Văn, Nhật).</div>`;
             return;
         }
 
-        // Thuật toán sắp xếp hiển thị kết quả thông minh: Ưu tiên đỗ hiển thị hàng đầu
-        finalReport.sort((a, b) => {
-            const priority = { "pass": 1, "warn": 2, "fail": 3 };
-            return priority[a.status] - priority[b.status];
+        // Thuật toán sắp xếp hiển thị: Ưu tiên ĐỖ lên trên cùng
+        outputList.sort((a, b) => {
+            const order = { "pass": 1, "warn": 2, "fail": 3 };
+            return order[a.status] - order[b.status];
         });
 
-        // Tạo phần tử DOM
-        finalReport.forEach(res => {
+        outputList.forEach(res => {
             let div = document.createElement('div');
             div.className = `result-item status-${res.status}`;
             div.innerHTML = `
@@ -276,7 +305,7 @@
                     <span style="font-size:13.5px; color:var(--primary); font-weight:700;">📌 Phương thức: ${res.method}</span><br>
                     <span style="font-size:14px;">
                         Điểm tính toán của bạn: <strong style="font-size:16px; color:#000;">${typeof res.myScore === 'number' ? res.myScore + ' đ' : res.myScore}</strong> | 
-                        Điểm chuẩn cần đạt: <strong>${res.benchmark} ${typeof res.benchmark === 'number' ? 'đ' : ''}</strong>
+                        Điểm chuẩn sàn: <strong>${res.benchmark} ${typeof res.benchmark === 'number'?'đ':''}</strong>
                     </span><br>
                     <small style="color:#475569; font-size:12px; display:block; margin-top:4px;">💡 ${res.note}</small>
                 </div>
